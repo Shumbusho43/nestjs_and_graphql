@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 export interface Item{
-    id?:string
+    id?:number;
     name:string
     description?:string
     qty:number

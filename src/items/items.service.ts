@@ -1,29 +1,48 @@
+import { PrismaService } from './../prisma.service';
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { Item } from './interfaces/items.interfaces';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
+ import { Item } from './interfaces/items.interfaces';
 import { CreateItemDto } from './dto/create-item.dto';
-
 @Injectable()
 export class ItemsService {
-    constructor(@InjectModel("Item") private readonly itemModel:Model<Item>){}
+    constructor(private prisma:PrismaService){}
     async findAll():Promise<Item[]>{
-        return await this.itemModel.find();
+        return await this.prisma.items.findMany();
     }
-    async findOne(id:string):Promise<Item>{
-        return await this.itemModel.findById(id);
+    async findOne(id:number):Promise<Item>{
+        return await this.prisma.items.findUnique({
+            where:{
+                id
+            }
+        })
     }
     async createItem(createItemDto:CreateItemDto):Promise<Item>{
-        const createdItem = new this.itemModel(createItemDto);
-        return await createdItem.save();
+        const createdItem =this.prisma.items.create({
+            data:{
+                name:createItemDto.name,
+                description:createItemDto.description,
+                qty:createItemDto.qty
+            }
+        })
+        return createdItem;
     }
-    async updateItem(id:string,updateItemDto:CreateItemDto):Promise<Item>{
-        return await this.itemModel.findByIdAndUpdate(id,updateItemDto,{
-            new:true
-        });
+    async updateItem(id:number,updateItemDto:CreateItemDto):Promise<Item>{
+        return await this.prisma.items.update({
+            where:{
+                id
+            },
+            data:{
+            name:updateItemDto.name,
+            description:updateItemDto.description,
+            qty:updateItemDto.qty
+            }
+        })
     }
-    async deleteItem(id:string):Promise<Item>{
-        return await this.itemModel.findByIdAndRemove(id);
+    async deleteItem(id:number):Promise<Item>{
+        return await this.prisma.items.delete({
+            where:{
+                id
+            }
+        })
     }
 }
