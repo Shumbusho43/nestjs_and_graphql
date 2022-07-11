@@ -12,7 +12,7 @@ export class ItemsController {
     return this.itemsService.findAll()
   }
   @Get(':id')
-  findOne (@Param('id') id): Promise<Item> {
+  findOne (@Param('id') id:number): Promise<Item> {
     return this.itemsService.findOne(id)
   }
   @Post()
@@ -22,13 +22,13 @@ export class ItemsController {
   @Put(':id')
   updateItem (
     @Body() updateItemDto: CreateItemDto,
-    @Param('id') id,
+    @Param() params: { id: number }
   ): Promise<Item> {
-    console.log(id)
-    return this.itemsService.updateItem(id, updateItemDto)
+    console.log(params.id)
+    return this.itemsService.updateItem(params.id, updateItemDto)
   }
   @Delete(':id')
-  deleteItem (@Param('id') id): Promise<Item> {
-    return this.itemsService.deleteItem(id)
+  deleteItem (@Param() param:{id:number}):Promise<Item> {
+    return this.itemsService.deleteItem(param.id)
   }
 }

@@ -12,7 +12,7 @@ export class ItemsService {
     async findOne(id:number):Promise<Item>{
         return await this.prisma.items.findUnique({
             where:{
-                id
+                id:Number(id)
             }
         })
     }
@@ -29,7 +29,7 @@ export class ItemsService {
     async updateItem(id:number,updateItemDto:CreateItemDto):Promise<Item>{
         return await this.prisma.items.update({
             where:{
-                id
+                id:Number(id)
             },
             data:{
             name:updateItemDto.name,
@@ -41,7 +41,7 @@ export class ItemsService {
     async deleteItem(id:number):Promise<Item>{
         return await this.prisma.items.delete({
             where:{
-                id
+                id:Number(id)
             }
         })
     }
