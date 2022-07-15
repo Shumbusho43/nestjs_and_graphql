@@ -1,11 +1,8 @@
-import { PrismaService } from './../prisma.service';
 /* eslint-disable prettier/prettier */
-import { Module } from '@nestjs/common';
-import { ItemsController } from './items.controller';
-import { ItemsService } from './items.service';
+import { PrismaService } from './../prisma.service';
+import { Module } from '@nestjs/common';;
+import { ItemsResolver } from './items.resolver';
 @Module({
-  imports: [],
-  controllers: [ItemsController],
-  providers: [ItemsService,PrismaService],
+  providers: [ItemsResolver,PrismaService],
 })
 export class ItemsModule {}
